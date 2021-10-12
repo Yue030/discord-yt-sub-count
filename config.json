@@ -1,0 +1,7 @@
+{
+    "token": "",
+    "prefix": "",
+    "google-api": "https://www.googleapis.com/youtube/v3/channels?part=statistics&id={id}&key={key}",
+    "google-api-key": "",
+    "yt-channel-id": ""
+}
