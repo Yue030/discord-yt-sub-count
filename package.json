@@ -2,7 +2,7 @@
   "name": "bot",
   "version": "1.0.0",
   "description": "YTSubCountBot",
-  "main": "CallYT_API.js",
+  "main": "bot.js",
   "author": "Double",
   "type": "commonjs",
   "dependencies": {
