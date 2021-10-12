@@ -19,21 +19,8 @@
 ![](https://i.imgur.com/vi4jxvt.png)
 
 ## 目錄
-- [YT訂閱數通知Discord機器人](#yt訂閱數通知discord機器人)
-  - [演示預覽](#演示預覽)
-    - [查看訂閱數，及設定通知頻道](#查看訂閱數及設定通知頻道)
-    - [訂閱數通知](#訂閱數通知)
-  - [目錄](#目錄)
-  - [安裝](#安裝)
-    - [安裝方法](#安裝方法)
-    - [配置檔案](#配置檔案)
-    - [獲取機器人token](#獲取機器人token)
-    - [獲取Google API Key](#獲取google-api-key)
-      - [Prefix 自訂義](#prefix-自訂義)
-    - [欲查詢頻道設置](#欲查詢頻道設置)
-    - [邀請機器人](#邀請機器人)
-  - [啟動機器人](#啟動機器人)
-  - [LICENSE: GNU General Public License v3.0](#license-gnu-general-public-license-v30)
+
+[TOC]
 
 ## 安裝
 Node.js v16.11 UP - https://nodejs.org/en/
