@@ -1,9 +1,9 @@
 {
-  "name": "memezuki-yt-sub-bot",
-  "version": "1.0.0",
+  "name": "@Yue030/discord-yt-sub-count",
+  "version": "1.0.1",
   "description": "YTSubCountBot",
   "main": "bot.js",
-  "author": "Double",
+  "author": "Memezuki",
   "type": "commonjs",
   "dependencies": {
     "ascii-table": "0.0.9",
@@ -19,5 +19,9 @@
     "start": "node ."
   },
   "keywords": [],
-  "license": "ISC"
+  "license": "GPL-3.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/Yue030"
+  },
+  "repository": "https://github.com/Yue030/discord-yt-sub-count"
 }
