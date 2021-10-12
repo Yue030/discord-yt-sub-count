@@ -6,8 +6,6 @@ module.exports = (client, Discord, msg) => {
     const args = msg.content.slice(prefix.length).trim().split(/ +/);
     const cmd = args.shift().toLowerCase();
 
-    console.log(cmd);
-    console.log(args);
     const command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
     if (command) {
         try {
