@@ -20,7 +20,7 @@ module.exports = (client, Discord) => {
                 const channel = guild.channels.cache.get(server_info.channel_id);
                 if (!channel) continue;
 
-                if (Number(tmp.items[0].statistics.subscriberCount > global.current_count)) {
+                if (tmp.items[0].statistics.subscriberCount > global.current_count) {
                     channel.send(`${global.channel_name} 的訂閱數: ${Number(tmp.items[0].statistics.subscriberCount)}`);
                     console.log(`Send to ${server_info.server_id}`);
                 }
