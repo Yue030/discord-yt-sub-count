@@ -11,22 +11,20 @@ module.exports = (client, Discord) => {
             let tmp = response.data;
 
             global.channel_name = tmp.items[0].snippet.title;
-            servers.forEach(server_info => {
-                if (server_info.channel_id.trim() != "") {
-                    let guild = client.guilds.cache.get(server_info.server_id);
+            for (const server_info of servers) {
+                if (server_info.channel_id.trim() === "") continue;
 
-                    if (guild) {
-                        let channel = guild.channels.cache.get(server_info.channel_id);
+                const guild = client.guilds.cache.get(server_info.server_id);
+                if (!guild) continue;
 
-                        if (channel) {
-                            if (Number(tmp.items[0].statistics.subscriberCount > global.current_count)) {
-                                channel.send(`${global.channel_name} 的訂閱數: ${Number(tmp.items[0].statistics.subscriberCount)}`);
-                                console.log(`Send to ${server_info.server_id}`);
-                            }
-                        }
-                    }
+                const channel = guild.channels.cache.get(server_info.channel_id);
+                if (!channel) continue;
+
+                if (Number(tmp.items[0].statistics.subscriberCount > global.current_count)) {
+                    channel.send(`${global.channel_name} 的訂閱數: ${Number(tmp.items[0].statistics.subscriberCount)}`);
+                    console.log(`Send to ${server_info.server_id}`);
                 }
-            });
+            }
 
             global.current_count = Number(tmp.items[0].statistics.subscriberCount);
         }).catch((err) => {
