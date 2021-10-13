@@ -203,6 +203,7 @@ M$set #(頻道名稱)
 
 輸入
 ```
+npm install
 npm start
 ```
 即可執行
