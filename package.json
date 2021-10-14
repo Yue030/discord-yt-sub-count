@@ -4,20 +4,74 @@
   "description": "YTSubCountBot",
   "main": "bot.js",
   "author": "Memezuki",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
+    "@typeit/discord": "^4.0.10",
     "ascii-table": "0.0.9",
     "axios": "^0.22.0",
-    "discord.js": "^13.2.0",
-    "fetch": "^1.1.0",
-    "node-fetch": "^3.0.0",
-    "request": "^2.88.2",
-    "winston": "^3.3.3"
+    "discord.js": "^13.2.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ."
+    "build": "tsc --resolveJsonModule",
+    "dev": "ts-node-dev bot.ts",
+    "start": "ts-node bot.ts"
   },
   "keywords": [],
-  "license": "GPL-3.0"
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "@types/node": "^16.11.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "eslint": "^7.32.0",
+    "prettier": "^2.4.1",
+    "prettier-eslint": "^13.0.0",
+    "ts-node": "^10.3.0",
+    "ts-node-dev": "^1.1.8",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "semi": [
+        "warn",
+        "always"
+      ],
+      "quotes": [
+        "warn",
+        "single"
+      ],
+      "comma-dangle": [
+        "warn",
+        "always-multiline"
+      ],
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars-experimental": "warn"
+    }
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
+  }
 }
