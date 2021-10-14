@@ -1,7 +1,0 @@
-{
-  "token": "ODk4MzIzNTE3Mzc0ODY1NDA5.YWii-A.Ttluar_Xbu1SOabLkGPMQighGFM",
-  "prefix": "",
-  "google-api": "https://www.googleapis.com/youtube/v3/channels?part=statistics&part=snippet&id={id}&key={key}",
-  "google-api-key": "",
-  "yt-channel-id": "UCb1cAfRDC_-JlbiTfzNd3Wg"
-}

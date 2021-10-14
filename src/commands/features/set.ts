@@ -1,5 +1,5 @@
 import fs from 'fs';
-import server from '../../server.json';
+import server from '~/secret/server.json';
 
 const serverFileName = './server.json';
 

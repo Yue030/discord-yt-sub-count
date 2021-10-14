@@ -1,5 +1,5 @@
-import messageCreate from '../events/messageCreate';
-import ready from '../events/ready';
+import messageCreate from '@/events/messageCreate';
+import ready from '@/events/ready';
 
 const events = [
   { name: 'messageCreate', event: messageCreate },

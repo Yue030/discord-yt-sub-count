@@ -1,6 +1,6 @@
 import axios from 'axios';
-import servers from '../server.json';
-import global from '../global';
+import servers from '~/secret/server.json';
+import global from '@/global';
 
 const ready = (client: any, Discord: any) => {
   console.log('Connected');

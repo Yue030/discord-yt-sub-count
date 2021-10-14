@@ -12,9 +12,9 @@
     "discord.js": "^13.2.0"
   },
   "scripts": {
-    "build": "tsc --resolveJsonModule",
-    "dev": "ts-node-dev bot.ts",
-    "start": "ts-node bot.ts"
+    "build": "tsc src/ --resolveJsonModule",
+    "dev": "ts-node-dev src/bot.ts",
+    "start": "ts-node src/bot.ts"
   },
   "keywords": [],
   "license": "GPL-3.0",

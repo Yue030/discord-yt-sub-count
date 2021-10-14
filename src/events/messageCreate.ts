@@ -1,4 +1,4 @@
-import { prefix } from '../config.json';
+import { prefix } from '~/secret/config.json';
 
 const messageCreate = (client: any, Discord: any, msg: any) => {
   if (!msg.content.startsWith(prefix) || msg.author.bot) return;
