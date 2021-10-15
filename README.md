@@ -1,4 +1,4 @@
-# YT訂閱數通知Discord機器人
+# YT訂閱數通知Discord機器人 (開發中，README等待Release才更新)
 
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Yue030/discord-yt-sub-count)
@@ -57,8 +57,6 @@ config.json
 {
     "token": "",
     "prefix": "",
-    "google-api": "https://www.googleapis.com/youtube/v3/channels?part=statistics&part=snippet&id={id}&key={key}",
-    "google-api-key": "",
     "yt-channel-id": ""
 }
 ```
@@ -68,16 +66,6 @@ config.json
 
 **prefix**
 > 指令前綴
-
-**google-api**
-> Youtube Data API v3 網址 (建議不要去動)
-> 
-> {id} 將會在執行的時候，自動帶入成 yt-channel-id 屬性
->
-> {key} 將會在執行的時候，自動帶入成 google-api-key 屬性
-
-**google-api-key**
-> Google API 金鑰
 
 **yt-channel-id**
 > 欲查詢訂閱數的頻道
