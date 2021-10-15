@@ -14,8 +14,6 @@ export default {
       return;
     }
 
-    console.log(msg);
-    
     const msgGuild = client.guilds.cache.get(msg.guild.id);
     const channel = msgGuild.channels.cache.get(
       args[0].slice(2, args[0].length - 1),
