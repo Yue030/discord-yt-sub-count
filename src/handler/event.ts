@@ -2,7 +2,7 @@ import messageCreate from '@/events/messageCreate';
 import ready from '@/events/ready';
 
 const events = [
-  { name: 'messageCreate', event: messageCreate },
+  { name: 'message', event: messageCreate },
   { name: 'ready', event: ready },
 ];
 

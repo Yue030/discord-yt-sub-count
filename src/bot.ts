@@ -8,7 +8,7 @@ import { token } from '~/secret/config.json';
 
 const client = new Client({
   ws: {
-    intents: [Intents.FLAGS.GUILDS],
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
   },
   classes: [
     `${__dirname}/*Discord.ts`, // glob string to load the classes

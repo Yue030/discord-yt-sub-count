@@ -1,6 +1,9 @@
-import axios from 'axios';
 import servers from '~/secret/server.json';
 import global from '@/global';
+
+import { getChannelList } from '@/google/youtube';
+
+import config from '~/secret/config.json';
 
 const ready = (client: any, Discord: any) => {
   console.log('Connected');
@@ -8,12 +11,18 @@ const ready = (client: any, Discord: any) => {
   console.log(`${client.user.username}(${client.user.id})`);
 
   const checkYTCount = () => {
-    axios
-      .get(global.url())
-      .then((response) => {
-        const tmp = response.data as any;
-
-        global.channel_name = tmp.items[0].snippet.title;
+    getChannelList({
+      id: [config['yt-channel-id']],
+      part: ['statistics', 'snippet'],
+    })
+      .then((res) => {
+        if (!res?.items) throw 'response.items not available!';
+        const ytChannel = res.items[0];
+        if (!ytChannel) throw 'No channel found!';
+        if (!ytChannel.snippet) throw 'channel.snippet not available!';
+        if (!ytChannel.snippet.title)
+          throw 'channel.snippet.title not available!';
+        global.channel_name = ytChannel.snippet.title;
         for (const server_info of servers as any) {
           if (server_info.channel_id.trim() === '') continue;
 
@@ -23,17 +32,22 @@ const ready = (client: any, Discord: any) => {
           const channel = guild.channels.cache.get(server_info.channel_id);
           if (!channel) continue;
 
-          if (tmp.items[0].statistics.subscriberCount > global.current_count) {
+          if (!ytChannel.statistics) throw 'channel.statistics not available!';
+          if (!ytChannel.statistics.subscriberCount)
+            throw 'channel.statistics.subscriberCount not available!';
+          const subCount = Number(ytChannel.statistics.subscriberCount);
+          if (subCount > global.current_count) {
             channel.send(
               `${global.channel_name} 的訂閱數: ${Number(
-                tmp.items[0].statistics.subscriberCount
-              )}`
+                channel.statistics.subscriberCount,
+              )}`,
             );
             console.log(`Send to ${server_info.server_id}`);
           }
         }
 
-        global.current_count = Number(tmp.items[0].statistics.subscriberCount);
+        if (!ytChannel.statistics) throw 'channel.statistics not available!';
+        global.current_count = Number(ytChannel.statistics.subscriberCount);
       })
       .catch((err) => {
         console.log('錯誤:', err);
