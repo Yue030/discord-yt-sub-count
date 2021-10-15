@@ -46,8 +46,8 @@ export default {
       console.log(`已成功將 ${msg.guild.name} 的通知頻道設為 ${args[0]}`);
     }
 
-    fs.writeFile(serverFileName, JSON.stringify(server, null, 4), (err) => {
-      if (err) console.log(err);
+    fs.writeFile(serverFileName, JSON.stringify(server, null, 2), (err) => {
+      if (err) console.error(err);
     });
   },
 };
