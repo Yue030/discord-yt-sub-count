@@ -39,7 +39,7 @@ const ready = (client: any, Discord: any) => {
           if (subCount > global.current_count) {
             channel.send(
               `${global.channel_name} 的訂閱數: ${Number(
-                channel.statistics.subscriberCount,
+                ytChannel.statistics.subscriberCount,
               )}`,
             );
             console.log(`Send to ${server_info.server_id}`);
