@@ -1,7 +1,7 @@
 import fs from 'fs';
 import server from '~/secret/server.json';
 
-const serverFileName = './server.json';
+const serverFileName = './secret/server.json';
 
 export default {
   name: 'set',
@@ -14,7 +14,9 @@ export default {
       return;
     }
 
-    const msgGuild = client.guilds.cache.get(msg.guildId);
+    console.log(msg);
+    
+    const msgGuild = client.guilds.cache.get(msg.guild.id);
     const channel = msgGuild.channels.cache.get(
       args[0].slice(2, args[0].length - 1),
     );
@@ -24,7 +26,7 @@ export default {
       return;
     }
 
-    const guild: Array<any> = server.filter((x: any) => x.server_id == msg.guildId);
+    const guild: Array<any> = server.filter((x: any) => x.server_id == msg.guild.id);
 
     if (guild.length > 0) {
       const temp = guild[0].channel_id;
@@ -37,7 +39,7 @@ export default {
       );
     } else {
       const obj = {
-        server_id: msg.guildId,
+        server_id: msg.guild.id,
         channel_id: channel.id,
       };
 
