@@ -1,8 +1,7 @@
 import { Intents } from 'discord.js';
-import { Client, Discord } from '@typeit/discord';
+import { Client } from '@typeit/discord';
 
-import Command from '@/handler/command';
-import Event from '@/handler/event';
+import eventHandler from '@/handler/events';
 
 import { token } from '~/secret/config.json';
 
@@ -18,7 +17,6 @@ const client = new Client({
   variablesChar: ':',
 });
 
-Command(client, Discord);
-Event(client, Discord);
+eventHandler(client);
 
 client.login(token);

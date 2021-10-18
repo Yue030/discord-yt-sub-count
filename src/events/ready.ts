@@ -1,14 +1,19 @@
-import servers from '~/secret/server.json';
+import { Client, NewsChannel, TextChannel } from 'discord.js';
 import global from '@/global';
 
 import { getChannelList } from '@/google/youtube';
+import { getServerList } from '@/handler/serverList';
 
 import config from '~/secret/config.json';
 
-const ready = (client: any, Discord: any) => {
+const ready = (client: Client): void => {
   console.log('Connected');
   console.log('Logged in as: ');
-  console.log(`${client.user.username}(${client.user.id})`);
+  console.log(
+    `${client.user?.username || 'Unknown username'}(${
+      client.user?.id || 'Unknown ID'
+    })`,
+  );
 
   const checkYTCount = () => {
     getChannelList({
@@ -23,14 +28,19 @@ const ready = (client: any, Discord: any) => {
         if (!ytChannel.snippet.title)
           throw 'channel.snippet.title not available!';
         global.channel_name = ytChannel.snippet.title;
-        for (const server_info of servers as any) {
+        const serverList = getServerList();
+        for (const server_info of serverList) {
           if (server_info.channel_id.trim() === '') continue;
 
           const guild = client.guilds.cache.get(server_info.server_id);
           if (!guild) continue;
 
           const channel = guild.channels.cache.get(server_info.channel_id);
-          if (!channel) continue;
+          if (
+            !channel ||
+            !(channel instanceof TextChannel || channel instanceof NewsChannel)
+          )
+            continue;
 
           if (!ytChannel.statistics) throw 'channel.statistics not available!';
           if (!ytChannel.statistics.subscriberCount)
@@ -39,7 +49,7 @@ const ready = (client: any, Discord: any) => {
           if (subCount > global.current_count) {
             channel.send(
               `${global.channel_name} 的訂閱數: ${Number(
-                channel.statistics.subscriberCount,
+                ytChannel.statistics.subscriberCount,
               )}`,
             );
             console.log(`Send to ${server_info.server_id}`);

@@ -1,23 +1,10 @@
-import { prefix } from '~/secret/config.json';
+import { Message, Client } from 'discord.js';
 
-const messageCreate = (client: any, Discord: any, msg: any) => {
-  if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+import commandHandler from '@/handler/commands';
 
-  const args = msg.content.slice(prefix.length).trim().split(/ +/);
-  const cmd = args.shift().toLowerCase();
-
-  const command =
-    client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-  if (command) {
-    try {
-      command.execute(msg, args, client);
-    } catch (error) {
-      console.error(error);
-      msg.channel.send('something error!');
-    }
-  } else {
-    msg.channel.send('Command Not Found!');
-  }
+const messageCreate = (msg: Message, client: Client): void => {
+  if (msg.author.bot) return;
+  commandHandler(msg, client);
 };
 
 export default messageCreate;
