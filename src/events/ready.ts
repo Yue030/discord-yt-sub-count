@@ -1,12 +1,18 @@
-import { Client, NewsChannel, TextChannel } from 'discord.js';
+import { Client } from '@typeit/discord';
+import { NewsChannel, TextChannel } from 'discord.js';
+
 import global from '@/global';
+import fs from 'fs';
 
 import { getChannelList } from '@/google/youtube';
-import { getServerList } from '@/handler/serverList';
 
 import config from '~/secret/config.json';
+import servers from '~/secret/server.json';
+import notify from '~/secret/notify.json';
 
-const ready = (client: Client): void => {
+const notifyFileName = './secret/notify.json';
+
+const ready = (client: Client) => {
   console.log('Connected');
   console.log('Logged in as: ');
   console.log(
@@ -20,17 +26,31 @@ const ready = (client: Client): void => {
       id: [config['yt-channel-id']],
       part: ['statistics', 'snippet'],
     })
-      .then((res) => {
+      .then(async (res) => {
         if (!res?.items) throw 'response.items not available!';
         const ytChannel = res.items[0];
-        if (!ytChannel) throw 'No channel found!';
-        if (!ytChannel.snippet) throw 'channel.snippet not available!';
+        if (!ytChannel)
+          throw 'No channel found!';
+        if (!ytChannel.snippet)
+          throw 'channel.snippet not available!';
         if (!ytChannel.snippet.title)
           throw 'channel.snippet.title not available!';
         global.channel_name = ytChannel.snippet.title;
-        const serverList = getServerList();
-        for (const server_info of serverList) {
-          if (server_info.channel_id.trim() === '') continue;
+        if (!ytChannel.statistics)
+          throw 'channel.statistics not available!';
+        if (!ytChannel.statistics.subscriberCount)
+          throw 'channel.statistics.subscriberCount not available!';
+        const subCount = Number(ytChannel.statistics.subscriberCount);
+
+        for (const notify_info of notify as any) {
+          if (Number(notify_info.notify_count) > subCount) continue;
+
+          if (notify_info.server_id.trim() == '') continue;
+          
+          const server = servers.filter(x => x.server_id == notify_info.server_id);
+          if (server.length < 1) continue;
+
+          const server_info = server[0];
 
           const guild = client.guilds.cache.get(server_info.server_id);
           if (!guild) continue;
@@ -42,22 +62,17 @@ const ready = (client: Client): void => {
           )
             continue;
 
-          if (!ytChannel.statistics) throw 'channel.statistics not available!';
-          if (!ytChannel.statistics.subscriberCount)
-            throw 'channel.statistics.subscriberCount not available!';
-          const subCount = Number(ytChannel.statistics.subscriberCount);
-          if (subCount > global.current_count) {
-            channel.send(
-              `${global.channel_name} 的訂閱數: ${Number(
-                ytChannel.statistics.subscriberCount,
-              )}`,
-            );
-            console.log(`Send to ${server_info.server_id}`);
-          }
-        }
+          await channel.send(
+            `${global.channel_name} 的訂閱數: ${subCount}`,
+          );
 
-        if (!ytChannel.statistics) throw 'channel.statistics not available!';
-        global.current_count = Number(ytChannel.statistics.subscriberCount);
+          removeItemOnce(notify, notify_info);
+
+          console.log(`Send to ${server_info.server_id}`);
+
+          fs.writeFileSync(notifyFileName, JSON.stringify(notify, null, 2));
+        }
+        global.current_count = subCount;
       })
       .catch((err) => {
         console.log('錯誤:', err);
@@ -67,5 +82,13 @@ const ready = (client: Client): void => {
   checkYTCount();
   setInterval(() => checkYTCount(), 10000);
 };
+
+function removeItemOnce(arr : Array<any>, value : any) {
+  const index = arr.indexOf(value);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
 
 export default ready;
