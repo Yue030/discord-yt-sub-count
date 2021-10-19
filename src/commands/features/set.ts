@@ -1,53 +1,43 @@
-import fs from 'fs';
-import server from '~/secret/server.json';
+import { Command } from '@/types';
 
-const serverFileName = './secret/server.json';
+import { getServerList, updateServerList } from '@/handler/serverList';
 
-export default {
+const set: Command = {
   name: 'set',
-  aliases: [] as Array<any>,
+  aliases: [],
   usage: 'set',
   description: 'set',
-  async execute(msg: any, args: any, client: any) {
+  async execute(msg, args) {
     if (args.length < 1) {
       msg.channel.send('請指定一個頻道');
       return;
     }
 
-    const msgGuild = client.guilds.cache.get(msg.guild.id);
-    const channel = msgGuild.channels.cache.get(
+    const guild = msg.guild;
+    if (!guild) {
+      msg.channel.send('找不到所在伺服器');
+      return;
+    }
+    const guildId = guild.id;
+    const channel = guild.channels.cache.get(
       args[0].slice(2, args[0].length - 1),
     );
-
     if (!channel) {
       msg.channel.send('未知頻道');
       return;
     }
 
-    const guild: Array<any> = server.filter((x: any) => x.server_id == msg.guild.id);
+    const serverList = getServerList();
+    const server = serverList.find((s) => s.server_id == guildId);
+    const new_ch = channel.id;
+    updateServerList({ server_id: guildId, channel_id: new_ch });
 
-    if (guild.length > 0) {
-      const temp = guild[0].channel_id;
-      guild[0].channel_id = channel.id;
-      msg.channel.send(
-        `已成功將 ${msg.guild.name} 的通知頻道從 <#${temp}> 設為 ${args[0]}`
-      );
-      console.log(
-        `已成功將 ${msg.guild.name} 的通知頻道從 <#${temp}> 設為 ${args[0]}`
-      );
-    } else {
-      const obj = {
-        server_id: msg.guild.id,
-        channel_id: channel.id,
-      };
-
-      (server as any).push(obj);
-      msg.channel.send(`已成功將 ${msg.guild.name} 的通知頻道設為 ${args[0]}`);
-      console.log(`已成功將 ${msg.guild.name} 的通知頻道設為 ${args[0]}`);
-    }
-
-    fs.writeFile(serverFileName, JSON.stringify(server, null, 2), (err) => {
-      if (err) console.error(err);
-    });
+    const str = server
+      ? `已成功將 ${msg.guild.name} 的通知頻道從 <#${server.channel_id}> 設為 <#${new_ch}>`
+      : `已成功將 ${msg.guild.name} 的通知頻道設為 <#${new_ch}>`;
+    msg.channel.send(str);
+    console.log(str);
   },
 };
+
+export default set;

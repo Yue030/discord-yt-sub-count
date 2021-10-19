@@ -1,10 +1,8 @@
 import { Intents } from 'discord.js';
-import { Client, Discord } from '@typeit/discord';
+import { Client } from '@typeit/discord';
 
-import Command from '@/handler/command';
-import Event from '@/handler/event';
-
-import { token } from '~/secret/config.json';
+import eventHandler from '@/handler/events';
+import { token } from '@/handler/config';
 
 const client = new Client({
   ws: {
@@ -18,7 +16,6 @@ const client = new Client({
   variablesChar: ':',
 });
 
-Command(client, Discord);
-Event(client, Discord);
+eventHandler(client);
 
 client.login(token);

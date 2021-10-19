@@ -1,13 +1,17 @@
-import global from '@/global';
+import { Command } from '@/types';
 
-export default {
+import store from '@/store';
+
+const count: Command = {
   name: 'count',
   aliases: [],
   usage: 'count',
   description: 'count',
-  execute(msg: any, args: any, client: any) {
+  execute: (msg) => {
     msg.channel.send(
-      `${global.channel_name} 的訂閱數: ${global.current_count}`
+      `${store.channel_name} 的訂閱數: ${store.current_count}`,
     );
   },
 };
+
+export default count;
