@@ -1,16 +1,13 @@
-import FS from 'fs';
 import { NewsChannel, TextChannel } from 'discord.js';
 import { Client } from '@typeit/discord';
 
 import { getChannelList } from '@/google/youtube';
 
 import { getServerList } from '@/handler/serverList';
-import { getNotifyList } from '@/handler/notifyList';
+import { cancelNotify, getNotifyList } from '@/handler/notifyList';
 import { ytChannelId } from '@/handler/config';
 
 import global from '@/global';
-
-const notifyFileName = './secret/notify.json';
 
 const ready = (client: Client): void => {
   console.log('Connected');
@@ -63,9 +60,8 @@ const ready = (client: Client): void => {
             continue;
 
           await channel.send(`${global.channel_name} 的訂閱數: ${subCount}`);
-          removeItemOnce(notifyList, notify_info);
           console.log(`Send to ${server.server_id}`);
-          FS.writeFileSync(notifyFileName, JSON.stringify(notifyList, null, 2));
+          cancelNotify(notify_info);
         }
         global.current_count = subCount;
       })
@@ -77,13 +73,5 @@ const ready = (client: Client): void => {
   checkYTCount();
   setInterval(() => checkYTCount(), 10000);
 };
-
-function removeItemOnce<T>(arr: Array<T>, value: T) {
-  const index = arr.indexOf(value);
-  if (index > -1) {
-    arr.splice(index, 1);
-  }
-  return arr;
-}
 
 export default ready;
