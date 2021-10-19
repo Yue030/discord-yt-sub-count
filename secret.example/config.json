@@ -1,7 +1,6 @@
 {
   "token": "DISCORD_BOT_TOKEN",
   "prefix": "!!",
-  "google-api": "https://www.googleapis.com/youtube/v3/channels?part=statistics&part=snippet&id={id}&key={key}",
   "google-api-key": "GOOGLE_API_KEY",
   "yt-channel-id": "YT_CHANNEL_ID"
 }
