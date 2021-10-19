@@ -1,6 +1,6 @@
 import { Client } from '@typeit/discord';
 
-import checkYoutubeCount from '../actions/checkYoutubeCount';
+import checkYoutubeCount from '@/actions/checkYoutubeCount';
 
 const ready = (client: Client): void => {
   console.log('Connected');

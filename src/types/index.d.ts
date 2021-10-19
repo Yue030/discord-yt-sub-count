@@ -8,12 +8,16 @@ export type Command = {
   execute: (msg: Message, args: string[], client: Client) => void;
 };
 
-export type ServerListItem = {
-  server_id: string;
-  channel_id: string;
+export type Notification = {
+  dcServerId: string;
+  dcChannelId: string;
+  targetSubCount: number;
 };
 
-export type NotifyListItem = {
-  server_id: string;
-  notify_count: number;
+export type BotData = {
+  prefix: string;
+  ytChannelId: string;
+  ytChannelName: string;
+  ytSubCount: number;
+  notifications: Array<Notification>
 };
