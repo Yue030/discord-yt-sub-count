@@ -1,9 +1,10 @@
-import config from '~/secret/config.json';
-import global from '~/src/global';
 import { Command } from '@/types';
-import { getServerList } from '~/src/handler/serverList';
-import { getNotifyList, updateNotifyList } from '~/src/handler/notifyList';
 
+import { getServerList } from '@/handler/serverList';
+import { getNotifyList, updateNotifyList } from '@/handler/notifyList';
+import { prefix } from '@/handler/config';
+
+import global from '@/global';
 
 const notify: Command = {
   name: 'notify',
@@ -32,7 +33,7 @@ const notify: Command = {
     const guildId = guild.id;
     const server = serverList.find((s) => s.server_id === guildId);
     if (!server) {
-      msg.channel.send(`請先使用 ${config.prefix}set 來設置通知頻道！`);
+      msg.channel.send(`請先使用 ${prefix}set 來設置通知頻道！`);
       return;
     }
 

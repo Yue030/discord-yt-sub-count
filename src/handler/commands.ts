@@ -2,9 +2,9 @@ import { Client, Message } from 'discord.js';
 
 import count from '@/commands/features/count';
 import set from '@/commands/features/set';
-import notify from '../commands/features/notify';
+import notify from '@/commands/features/notify';
 
-import { prefix } from '~/secret/config.json';
+import { prefix } from '@/handler/config';
 
 const commands = [count, set, notify];
 

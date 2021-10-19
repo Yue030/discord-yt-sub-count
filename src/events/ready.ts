@@ -1,14 +1,14 @@
-import { Client } from '@typeit/discord';
+import FS from 'fs';
 import { NewsChannel, TextChannel } from 'discord.js';
-
-import global from '@/global';
-import fs from 'fs';
+import { Client } from '@typeit/discord';
 
 import { getChannelList } from '@/google/youtube';
 
-import config from '~/secret/config.json';
-import { getServerList } from '../handler/serverList';
-import { getNotifyList } from '../handler/notifyList';
+import { getServerList } from '@/handler/serverList';
+import { getNotifyList } from '@/handler/notifyList';
+import { ytChannelId } from '@/handler/config';
+
+import global from '@/global';
 
 const notifyFileName = './secret/notify.json';
 
@@ -23,7 +23,7 @@ const ready = (client: Client): void => {
 
   const checkYTCount = () => {
     getChannelList({
-      id: [config['yt-channel-id']],
+      id: [ytChannelId],
       part: ['statistics', 'snippet'],
     })
       .then(async (res) => {
@@ -65,7 +65,7 @@ const ready = (client: Client): void => {
           await channel.send(`${global.channel_name} 的訂閱數: ${subCount}`);
           removeItemOnce(notifyList, notify_info);
           console.log(`Send to ${server.server_id}`);
-          fs.writeFileSync(notifyFileName, JSON.stringify(notifyList, null, 2));
+          FS.writeFileSync(notifyFileName, JSON.stringify(notifyList, null, 2));
         }
         global.current_count = subCount;
       })

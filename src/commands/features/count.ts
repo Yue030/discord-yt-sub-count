@@ -1,5 +1,6 @@
-import global from '@/global';
 import { Command } from '@/types';
+
+import global from '@/global';
 
 const count: Command = {
   name: 'count',

@@ -1,4 +1,4 @@
-import { Command } from '~/src/types';
+import { Command } from '@/types';
 
 const cancel: Command = {
   name: 'cancel',

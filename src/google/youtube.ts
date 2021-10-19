@@ -1,5 +1,5 @@
-import authorize, { credentials } from './authorization';
 import { Auth, google as Google, youtube_v3 } from 'googleapis';
+import authorize, { credentials } from '@/google/authorization';
 
 const useYoutubeApi = <S>(
   apiCallback: (

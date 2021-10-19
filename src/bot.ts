@@ -2,8 +2,7 @@ import { Intents } from 'discord.js';
 import { Client } from '@typeit/discord';
 
 import eventHandler from '@/handler/events';
-
-import { token } from '~/secret/config.json';
+import { token } from '@/handler/config';
 
 const client = new Client({
   ws: {
