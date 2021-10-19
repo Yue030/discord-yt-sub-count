@@ -3,11 +3,8 @@ import { Client } from '@typeit/discord';
 
 import { getChannelList } from '@/google/youtube';
 
-import { getServerList } from '@/handler/serverList';
-import { cancelNotify, getNotifyList } from '@/handler/notifyList';
 import { ytChannelId } from '@/handler/config';
-
-import store from '@/store';
+import { getChannelName, getNotifications, removeNotification, setChannelName, setSubCount } from '../handler/data';
 
 const checkYoutubeCount = async (client: Client): Promise<void> => {
   try {
@@ -20,40 +17,34 @@ const checkYoutubeCount = async (client: Client): Promise<void> => {
     if (!ytChannel) throw 'No channel found!';
     if (!ytChannel.snippet) throw 'channel.snippet not available!';
     if (!ytChannel.snippet.title) throw 'channel.snippet.title not available!';
-    store.channel_name = ytChannel.snippet.title;
+    setChannelName(ytChannel.snippet.title);
     if (!ytChannel.statistics) throw 'channel.statistics not available!';
     if (!ytChannel.statistics.subscriberCount)
       throw 'channel.statistics.subscriberCount not available!';
     const subCount = Number(ytChannel.statistics.subscriberCount);
 
-    const serverList = getServerList();
-    const notifyList = getNotifyList();
+    const notifications = getNotifications();
 
-    for (const notify_info of notifyList) {
-      if (Number(notify_info.notify_count) > subCount) continue;
+    for (const notification of notifications) {
+      if (Number(notification.targetSubCount) > subCount) continue;
 
-      if (notify_info.server_id.trim() === '') continue;
+      if (notification.dcServerId.trim() === '') continue;
 
-      const server = serverList.find(
-        (x) => x.server_id === notify_info.server_id,
-      );
-      if (!server) continue;
-
-      const guild = client.guilds.cache.get(server.server_id);
+      const guild = client.guilds.cache.get(notification.dcServerId);
       if (!guild) continue;
 
-      const channel = guild.channels.cache.get(server.channel_id);
+      const channel = guild.channels.cache.get(notification.dcChannelId);
       if (
         !channel ||
         !(channel instanceof TextChannel || channel instanceof NewsChannel)
       )
         continue;
 
-      await channel.send(`${store.channel_name} 的訂閱數: ${subCount}`);
-      console.log(`Send to ${server.server_id}`);
-      cancelNotify(notify_info);
+      await channel.send(`${getChannelName()} 的訂閱數: ${subCount}`);
+      console.log(`Sent to ${notification.dcChannelId}`);
+      removeNotification(notification);
     }
-    store.current_count = subCount;
+    setSubCount(subCount);
   } catch (err) {
     console.error(err);
   }

@@ -1,6 +1,6 @@
 import { Command } from '@/types';
 
-import store from '@/store';
+import { getChannelName, getSubCount } from '~/src/handler/data';
 
 const count: Command = {
   name: 'count',
@@ -9,7 +9,7 @@ const count: Command = {
   description: 'count',
   execute: (msg) => {
     msg.channel.send(
-      `${store.channel_name} 的訂閱數: ${store.current_count}`,
+      `${getChannelName()} 的訂閱數: ${getSubCount()}`,
     );
   },
 };
