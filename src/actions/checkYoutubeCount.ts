@@ -4,7 +4,7 @@ import { Client } from '@typeit/discord';
 import { getChannelList } from '@/google/youtube';
 
 import { ytChannelId } from '@/handler/config';
-import { getChannelName, getNotifications, removeNotification, setChannelName, setSubCount } from '../handler/data';
+import { getChannelName, getNotifications, removeNotification, setChannelName, setSubCount } from '@/handler/data';
 
 const checkYoutubeCount = async (client: Client): Promise<void> => {
   try {
