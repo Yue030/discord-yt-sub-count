@@ -7,7 +7,7 @@ import { getServerList } from '@/handler/serverList';
 import { cancelNotify, getNotifyList } from '@/handler/notifyList';
 import { ytChannelId } from '@/handler/config';
 
-import global from '@/global';
+import store from '@/store';
 
 const ready = (client: Client): void => {
   console.log('Connected');
@@ -30,7 +30,7 @@ const ready = (client: Client): void => {
         if (!ytChannel.snippet) throw 'channel.snippet not available!';
         if (!ytChannel.snippet.title)
           throw 'channel.snippet.title not available!';
-        global.channel_name = ytChannel.snippet.title;
+        store.channel_name = ytChannel.snippet.title;
         if (!ytChannel.statistics) throw 'channel.statistics not available!';
         if (!ytChannel.statistics.subscriberCount)
           throw 'channel.statistics.subscriberCount not available!';
@@ -59,11 +59,11 @@ const ready = (client: Client): void => {
           )
             continue;
 
-          await channel.send(`${global.channel_name} 的訂閱數: ${subCount}`);
+          await channel.send(`${store.channel_name} 的訂閱數: ${subCount}`);
           console.log(`Send to ${server.server_id}`);
           cancelNotify(notify_info);
         }
-        global.current_count = subCount;
+        store.current_count = subCount;
       })
       .catch((err) => {
         console.log('錯誤:', err);

@@ -4,7 +4,7 @@ import { getServerList } from '@/handler/serverList';
 import { getNotifyList, updateNotifyList } from '@/handler/notifyList';
 import { prefix } from '@/handler/config';
 
-import global from '@/global';
+import store from '@/store';
 
 const notify: Command = {
   name: 'notify',
@@ -37,7 +37,7 @@ const notify: Command = {
       return;
     }
 
-    if (notifyCount < global.current_count) {
+    if (notifyCount < store.current_count) {
       msg.channel.send('不可設置已達成的訂閱數目標！');
       return;
     }
@@ -58,7 +58,7 @@ const notify: Command = {
     });
 
     await msg.channel.send(
-      `設置在 ${global.channel_name} 達到 ${notifyCount} 時通知成功！`,
+      `設置在 ${store.channel_name} 達到 ${notifyCount} 時通知成功！`,
     );
   },
 };

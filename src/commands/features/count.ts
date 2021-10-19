@@ -1,6 +1,6 @@
 import { Command } from '@/types';
 
-import global from '@/global';
+import store from '@/store';
 
 const count: Command = {
   name: 'count',
@@ -9,7 +9,7 @@ const count: Command = {
   description: 'count',
   execute: (msg) => {
     msg.channel.send(
-      `${global.channel_name} 的訂閱數: ${global.current_count}`,
+      `${store.channel_name} 的訂閱數: ${store.current_count}`,
     );
   },
 };
