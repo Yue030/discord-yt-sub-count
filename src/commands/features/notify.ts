@@ -5,7 +5,7 @@ import {
   getNotifications,
   getSubCount,
   updateNotification,
-} from '~/src/handler/data';
+} from '@/handler/data';
 
 const notify: Command = {
   name: 'notify',
