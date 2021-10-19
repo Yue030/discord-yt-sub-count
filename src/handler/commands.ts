@@ -3,10 +3,11 @@ import { Client, Message } from 'discord.js';
 import count from '@/commands/features/count';
 import notify from '@/commands/features/notify';
 import cancel from '@/commands/features/cancel';
+import setprefix from '@/commands/features/setprefix';
 
 import { getPrefix } from '@/handler/data';
 
-const commands = [count, notify, cancel];
+const commands = [count, notify, cancel, setprefix];
 
 const commandHandler = (msg: Message, client: Client): void => {
   const prefix = getPrefix();
