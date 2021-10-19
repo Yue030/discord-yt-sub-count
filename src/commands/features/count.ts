@@ -1,6 +1,6 @@
 import { Command } from '@/types';
 
-import { getChannelName, getSubCount } from '~/src/handler/data';
+import { getChannelName, getSubCount } from '@/handler/data';
 
 const count: Command = {
   name: 'count',
