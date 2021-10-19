@@ -8,7 +8,7 @@ const set: Command = {
   usage: 'set',
   description: 'set',
   async execute(msg, args) {
-    if (!args || args.length < 1) {
+    if (args.length < 1) {
       msg.channel.send('請指定一個頻道');
       return;
     }

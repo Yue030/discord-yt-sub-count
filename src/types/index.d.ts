@@ -12,3 +12,8 @@ export type ServerListItem = {
   server_id: string;
   channel_id: string;
 };
+
+export type NotifyListItem = {
+  server_id: string;
+  notify_count: number;
+};

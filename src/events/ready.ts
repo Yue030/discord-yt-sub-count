@@ -7,12 +7,12 @@ import fs from 'fs';
 import { getChannelList } from '@/google/youtube';
 
 import config from '~/secret/config.json';
-import servers from '~/secret/server.json';
-import notify from '~/secret/notify.json';
+import { getServerList } from '../handler/serverList';
+import { getNotifyList } from '../handler/notifyList';
 
 const notifyFileName = './secret/notify.json';
 
-const ready = (client: Client) => {
+const ready = (client: Client): void => {
   console.log('Connected');
   console.log('Logged in as: ');
   console.log(
@@ -29,48 +29,43 @@ const ready = (client: Client) => {
       .then(async (res) => {
         if (!res?.items) throw 'response.items not available!';
         const ytChannel = res.items[0];
-        if (!ytChannel)
-          throw 'No channel found!';
-        if (!ytChannel.snippet)
-          throw 'channel.snippet not available!';
+        if (!ytChannel) throw 'No channel found!';
+        if (!ytChannel.snippet) throw 'channel.snippet not available!';
         if (!ytChannel.snippet.title)
           throw 'channel.snippet.title not available!';
         global.channel_name = ytChannel.snippet.title;
-        if (!ytChannel.statistics)
-          throw 'channel.statistics not available!';
+        if (!ytChannel.statistics) throw 'channel.statistics not available!';
         if (!ytChannel.statistics.subscriberCount)
           throw 'channel.statistics.subscriberCount not available!';
         const subCount = Number(ytChannel.statistics.subscriberCount);
 
-        for (const notify_info of notify as any) {
+        const serverList = getServerList();
+        const notifyList = getNotifyList();
+
+        for (const notify_info of notifyList) {
           if (Number(notify_info.notify_count) > subCount) continue;
 
-          if (notify_info.server_id.trim() == '') continue;
-          
-          const server = servers.filter(x => x.server_id == notify_info.server_id);
-          if (server.length < 1) continue;
+          if (notify_info.server_id.trim() === '') continue;
 
-          const server_info = server[0];
+          const server = serverList.find(
+            (x) => x.server_id === notify_info.server_id,
+          );
+          if (!server) continue;
 
-          const guild = client.guilds.cache.get(server_info.server_id);
+          const guild = client.guilds.cache.get(server.server_id);
           if (!guild) continue;
 
-          const channel = guild.channels.cache.get(server_info.channel_id);
+          const channel = guild.channels.cache.get(server.channel_id);
           if (
             !channel ||
             !(channel instanceof TextChannel || channel instanceof NewsChannel)
           )
             continue;
 
-          await channel.send(
-            `${global.channel_name} 的訂閱數: ${subCount}`,
-          );
-
-          removeItemOnce(notify, notify_info);
-
-          console.log(`Send to ${server_info.server_id}`);
-
-          fs.writeFileSync(notifyFileName, JSON.stringify(notify, null, 2));
+          await channel.send(`${global.channel_name} 的訂閱數: ${subCount}`);
+          removeItemOnce(notifyList, notify_info);
+          console.log(`Send to ${server.server_id}`);
+          fs.writeFileSync(notifyFileName, JSON.stringify(notifyList, null, 2));
         }
         global.current_count = subCount;
       })
@@ -83,7 +78,7 @@ const ready = (client: Client) => {
   setInterval(() => checkYTCount(), 10000);
 };
 
-function removeItemOnce(arr : Array<any>, value : any) {
+function removeItemOnce<T>(arr: Array<T>, value: T) {
   const index = arr.indexOf(value);
   if (index > -1) {
     arr.splice(index, 1);
