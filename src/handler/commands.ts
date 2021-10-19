@@ -1,12 +1,11 @@
 import { Client, Message } from 'discord.js';
 
 import count from '@/commands/features/count';
-import set from '@/commands/features/set';
 import notify from '@/commands/features/notify';
 
 import { prefix } from '@/handler/config';
 
-const commands = [count, set, notify];
+const commands = [count, notify];
 
 const commandHandler = (msg: Message, client: Client): void => {
   if (!msg.content.startsWith(prefix) || msg.author.bot) return;
