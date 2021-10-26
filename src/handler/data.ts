@@ -69,7 +69,8 @@ export const updateNotification = (notify: Notification): Notification => {
   let target = notifications.find(
     (n) =>
       n.dcServerId === notify.dcServerId &&
-      n.dcChannelId === notify.dcChannelId,
+      n.dcChannelId === notify.dcChannelId &&
+      n.targetSubCount === notify.targetSubCount,
   );
   if (target) target.targetSubCount = notify.targetSubCount;
   else target = notifications[notifications.push(notify) - 1];
@@ -82,10 +83,10 @@ export const removeNotification = (
 ): Notification | null => {
   const notifications = getNotifications();
   const index = notifications.findIndex(
-    (s) =>
-      s.dcServerId === notify.dcServerId &&
-      s.dcChannelId === notify.dcChannelId &&
-      s.targetSubCount === notify.targetSubCount,
+    (n) =>
+      n.dcServerId === notify.dcServerId &&
+      n.dcChannelId === notify.dcChannelId &&
+      n.targetSubCount === notify.targetSubCount,
   );
   let target: Notification;
   if (index >= 0) [target] = notifications.splice(index, 1);
