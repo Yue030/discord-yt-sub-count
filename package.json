@@ -4,7 +4,7 @@
   "description": "YTSubCountBot",
   "main": "bot.js",
   "author": "Memezuki",
-  "type": "module",
+  "type": "commonjs",
   "dependencies": {
     "@typeit/discord": "^4.0.10",
     "ascii-table": "0.0.9",
